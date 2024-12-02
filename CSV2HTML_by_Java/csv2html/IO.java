@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import utility.StringUtility;
 
@@ -64,7 +65,22 @@ public abstract class IO extends Object
 	 */
 	public static String htmlCanonicalString(String aString)
 	{
-		return null;
+		Map<String, String> table = new LinkedHashMap<>();
+		table.put("&", "&amp;");
+		table.put(">", "&gt;");
+		table.put("<", "&lt;");
+		table.put("\"", "&quot;");
+		table.put(" ", "&nbsp;");
+		table.put("\t", "");
+		table.put("\r", "");
+		table.put("\n", "<br>");
+		table.put("\f", "");
+
+		for (Map.Entry<String, String> entry : table.entrySet()) {
+			aString = aString.replaceAll(entry.getKey(), entry.getValue());
+		}
+
+		return aString;
 	}
 
 	/**
