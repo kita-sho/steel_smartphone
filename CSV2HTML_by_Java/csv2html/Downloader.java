@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import utility.ImageUtility;
+import utility.StringUtility;
 
 /**
  * ダウンローダ：CSVファイル・画像ファイル・サムネイル画像ファイルをダウンロードする。
@@ -26,9 +27,14 @@ public class Downloader extends IO
 	 */
 	public void downloadCSV()
 	{
+		String csvUrl = super.attributes().csvUrl();
+		List<String> splitUrl = IO.splitString(csvUrl, "/");
+		File csvFile = new File(super.attributes().baseDirectory(), splitUrl.get(splitUrl.size() - 1));
+		List<String> csvText = IO.readTextFromURL(csvUrl);
+		IO.writeText(csvText, csvFile);
 		return;
 	}
-
+	
 	/**
 	 * 総理大臣の画像群をダウンロードする。
 	 */
@@ -46,6 +52,14 @@ public class Downloader extends IO
 	 */
 	private void downloadPictures(int indexOfPicture)
 	{
+		List<Tuple> tuples = super.table().tuples();
+		List<BufferedImage> pictures = new ArrayList<BufferedImage>();
+		for (Tuple aTuple : tuples)
+		{
+			String pictureUrl = aTuple.at(indexOfPicture);
+			BufferedImage picture = ImageUtility.readImageFromURL(pictureUrl);
+			pictures.add(picture);
+		}
 		return;
 	}
 
@@ -65,6 +79,7 @@ public class Downloader extends IO
 	 */
 	public void perform()
 	{
+		this.downloadCSV();
 		return;
 	}
 }
