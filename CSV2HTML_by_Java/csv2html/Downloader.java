@@ -52,14 +52,6 @@ public class Downloader extends IO
 	 */
 	private void downloadPictures(int indexOfPicture)
 	{
-		List<Tuple> tuples = super.table().tuples();
-		List<BufferedImage> pictures = new ArrayList<BufferedImage>();
-		for (Tuple aTuple : tuples)
-		{
-			String pictureUrl = aTuple.at(indexOfPicture);
-			BufferedImage picture = ImageUtility.readImageFromURL(pictureUrl);
-			pictures.add(picture);
-		}
 		return;
 	}
 
