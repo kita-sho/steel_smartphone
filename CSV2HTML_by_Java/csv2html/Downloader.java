@@ -72,6 +72,8 @@ public class Downloader extends IO
 	public void perform()
 	{
 		this.downloadCSV();
+		Reader reader = new Reader(super.table());
+		reader.perform();
 		return;
 	}
 }
