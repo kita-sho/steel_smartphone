@@ -11,6 +11,9 @@ import java.util.Map;
 
 /**
  * トランスレータ：CSVファイルをHTMLページへと変換するプログラム。
+ * @author 北村拓海
+ * @since 2024/12/01
+ * @version 1.0
  */
 public class Translator extends Object {
 

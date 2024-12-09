@@ -59,11 +59,12 @@ public class Writer extends IO {
     public void writeAttributesOn(BufferedWriter aWriter) throws IOException {
         aWriter.write("<tr>");
         aWriter.newLine();
-
-        for (String header : this.attributes().names()) {
-            aWriter.write("<th class=\"center-pink\"><strong>" + header + "</strong></th>");
+        
+        for (String attribute : this.table().attributes().names()) {
+            aWriter.write("<td class=\"center-pink\"><strong>" + attribute + "</strong></td>");
             aWriter.newLine();
         }
+        
         aWriter.write("</tr>");
         aWriter.newLine();
     }
@@ -92,7 +93,14 @@ public class Writer extends IO {
         aWriter.newLine();
         aWriter.write("<head>");
         aWriter.write("<meta charset=\"UTF-8\">");
-        aWriter.write("<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 8px; text-align: left; } th { background-color: #f2f2f2; }</style>");
+        aWriter.write("<style>");
+        aWriter.write("table { border-collapse: collapse; width: 100%; }");
+        aWriter.write("th, td { border: 1px solid black; padding: 8px; text-align: left; }");
+        aWriter.write("th { background-color: #f2f2f2; }");
+        aWriter.write(".even-row { background-color: #ffffff; }");
+        aWriter.write(".odd-row { background-color: #f9f9f9; }");
+        aWriter.write("img { display: block; margin: auto; }");
+        aWriter.write("</style>");
         aWriter.write("</head>");
         aWriter.newLine();
         aWriter.write("<body>");
@@ -114,26 +122,43 @@ public class Writer extends IO {
      * タプル群を書き出す。
      * @param aWriter ライタ
      */
-    public void writeTuplesOn(BufferedWriter aWriter) throws IOException {
-        // テーブルからタプル群を取得
-        List<Tuple> tuples = this.table().tuples();
-    
-        // 各行（タプル）を書き出す
-        for (Tuple tuple : tuples) {
+    private void writeTuplesOn(BufferedWriter aWriter) throws IOException {
+        int index = 0;
+        for (Tuple aTuple : this.table().tuples()) {
             aWriter.write("<tr>");
             aWriter.newLine();
-    
-            // タプルの各セルの値を取り出し、書き出す
-            for (String cell : tuple.values()) {
-                // &nbsp; を削除
-                String cleanedCell = cell.replace("&nbsp;", "");
-                aWriter.write("<td>" + IO.htmlCanonicalString(cleanedCell) + "</td>");
+            
+            String rowClass = (index % 2 == 0) ? "even-row" : "odd-row";
+            for (String aString : aTuple.values()) {
+                aWriter.write("<td class=\"" + rowClass + "\">");
+                
+                // エスケープされたHTMLタグを元に戻して処理
+                String unescapedString = aString
+                    .replace("&lt;", "<")
+                    .replace("&gt;", ">")
+                    .replace("&quot;", "\"")
+                    .replace("&amp;", "&");
+                    
+                if (unescapedString.startsWith("<a href='images/") && unescapedString.endsWith("</a>")) {
+                    // 画像タグをそのまま出力
+                    aWriter.write(unescapedString);
+                } else if (unescapedString.matches(".*\\d+\\.jpg$")) {
+                    String imageNumber = unescapedString.replaceAll("[^0-9]", "");
+                    aWriter.write("<a href=\"images/" + imageNumber + ".jpg\">");
+                    aWriter.write("<img src=\"thumbnails/" + imageNumber + ".jpg\" " +
+                                "width=\"64\" height=\"64\" " +
+                                "alt=\"Image " + imageNumber + "\">");
+                    aWriter.write("</a>");
+                } else {
+                    aWriter.write(IO.htmlCanonicalString(unescapedString));
+                }
+                
+                aWriter.write("</td>");
                 aWriter.newLine();
             }
-    
             aWriter.write("</tr>");
             aWriter.newLine();
+            index++;
         }
     }
-    
 }
