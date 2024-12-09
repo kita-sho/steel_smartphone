@@ -1,6 +1,5 @@
 package csv2html;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -56,18 +55,43 @@ public class Translator extends Object {
      * @param periodString 在位期間の文字列
      * @return 在位日数の文字列
      */
-    public String computeNumberOfDays(String periodString) {
-    try {
-        String[] dates = periodString.split("〜");
-        LocalDate startDate = LocalDate.parse(dates[0].trim());
-        LocalDate endDate = LocalDate.parse(dates[1].trim());
-        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
-        return Long.toString(daysBetween);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "不明";
-    }
-}
+    public String computeNumberOfDays(String period) {
+        try {
+            String[] dates = period.split("〜");
+            if (dates.length != 2) {
+                return "不明";
+            }
+
+            String startDateStr = dates[0].trim();
+            String endDateStr = dates[1].trim();
+
+            String[] startParts = startDateStr.split("[年月日]");
+            String[] endParts = endDateStr.split("[年月日]");
+
+            if (startParts.length != 3 || endParts.length != 3) {
+                return "不明";
+            }
+
+            LocalDate startDate = LocalDate.of(
+                Integer.parseInt(startParts[0]),
+                Integer.parseInt(startParts[1]),
+                Integer.parseInt(startParts[2])
+            );
+
+            LocalDate endDate = LocalDate.of(
+                Integer.parseInt(endParts[0]),
+                Integer.parseInt(endParts[1]),
+                Integer.parseInt(endParts[2])
+            );
+
+            long days = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+            return String.valueOf(days);
+
+        } catch (Exception e) {
+            return "不明";
+        }
+    }    
+
 
 
     /**
@@ -99,6 +123,7 @@ public class Translator extends Object {
         // HTMLに由来するテーブルから書き出す。
         Writer aWriter = new Writer(this.outputTable);
         aWriter.perform();
+
 
         // ブラウザを立ち上げて閲覧する。
         try {
@@ -151,7 +176,7 @@ public class Translator extends Object {
 
             String columnName;
             if (specialColumnNames.containsKey(key)) {
-                // 特殊カラム（在位日数な�）の場合は定義済みの名前を使用
+                // 特殊カラム（な�）の場合は定義済みの名前を使用
                 columnName = specialColumnNames.get(key);
             } else if (indexOfInputKey != -1) {
                 // 入力CSVに存在するカラムの�合はCSVの属性名を使用
