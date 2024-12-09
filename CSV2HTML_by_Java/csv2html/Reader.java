@@ -11,6 +11,9 @@ public class Reader extends IO
 	/**
 	 * リーダのコンストラクタ。
 	 * @param aTable テーブル
+	 * @author 北澤昇大
+	 * @since 2024/12/9
+	 * @version 1.0
 	 */
 	public Reader(Table aTable)
 	{

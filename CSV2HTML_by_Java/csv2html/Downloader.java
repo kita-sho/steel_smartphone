@@ -8,6 +8,9 @@ import utility.StringUtility;
 
 /**
  * ダウンローダ：CSVファイル・画像ファイル・サムネイル画像ファイルをダウンロードする。
+ * @author 北澤昇大
+ * @since 2024/12/9
+ * @version 2.0
  */
 public class Downloader extends IO
 {
@@ -52,7 +55,17 @@ public class Downloader extends IO
 	 */
 	private void downloadPictures(int indexOfPicture)
 	{
-		super().
+		List<Tuple> tuples = super.table().tuples();
+		// System.out.println("Listの中のタプルの中の一要素を抜き出す"+tuples.get(1).values().get(indexOfPicture));
+		for(int i=1;i<tuples.size();i++){
+			String pictureName = tuples.get(i).values().get(indexOfPicture);
+			File picturesFile = new File(super.attributes().baseDirectory(), pictureName);
+			//System.out.println("picturename"+pictureName);
+			BufferedImage anImage = ImageUtility.readImageFromURL(super.attributes().baseUrl() + pictureName);
+			picturesFile.getParentFile().mkdirs();
+			ImageUtility.writeImage(anImage, picturesFile);
+		}
+		
 		return;
 	}
 
@@ -75,6 +88,11 @@ public class Downloader extends IO
 		this.downloadCSV();
 		Reader reader = new Reader(super.table());
 		reader.perform();
+		/*
+		 * この二つはThradを使って同時にできるかも by北澤 12月9日
+		 */
+		this.downloadThumbnails();
+		this.downloadImages();
 		return;
 	}
 }
