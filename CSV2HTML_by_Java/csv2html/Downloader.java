@@ -57,7 +57,7 @@ public class Downloader extends IO
 	{
 		List<Tuple> tuples = super.table().tuples();
 		// System.out.println("Listの中のタプルの中の一要素を抜き出す"+tuples.get(1).values().get(indexOfPicture));
-		for(int i=1;i<tuples.size();i++){
+		for(int i=0;i<tuples.size();i++){
 			String pictureName = tuples.get(i).values().get(indexOfPicture);
 			File picturesFile = new File(super.attributes().baseDirectory(), pictureName);
 			//System.out.println("picturename"+pictureName);
