@@ -8,6 +8,10 @@ import utility.ImageUtility;
 
 /**
  * 表：情報テーブル。
+ * @author 北澤昇大
+ * @author 小川結人
+ * @since 2024/12/9
+ * @version 1.0
  */
 public class Table extends Object {
 
@@ -104,6 +108,10 @@ public class Table extends Object {
      * @return 画像
      */
     private BufferedImage picture(String aString) {
+        File imageFile = new File(this.attributes().baseDirectory(),aString);
+        if(imageFile.exists()){
+            return ImageUtility.readImageFromFile(imageFile);
+        }
         return null;
     }
 
