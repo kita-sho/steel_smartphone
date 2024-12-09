@@ -52,6 +52,7 @@ public class Downloader extends IO
 	 */
 	private void downloadPictures(int indexOfPicture)
 	{
+		super().
 		return;
 	}
 

@@ -43,7 +43,6 @@ public class Reader extends IO
 			List<String> splitText = IO.splitString(csvListText.get(i),",");
 			Tuple aTuple = new Tuple(super.attributes(), splitText);
 			super.table().add(aTuple);
-
 		}
 
 

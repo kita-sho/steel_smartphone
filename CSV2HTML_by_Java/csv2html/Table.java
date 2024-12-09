@@ -104,6 +104,10 @@ public class Table extends Object {
      * @return 画像
      */
     private BufferedImage picture(String aString) {
+        File imageFile = new File(this.attributes().baseDirectory(),aString);
+        if(imageFile.exists()){
+            return ImageUtility.readImageFromFile(imageFile);
+        }
         return null;
     }
 
