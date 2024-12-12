@@ -2,6 +2,7 @@ package csv2html;
 
 import java.io.File;
 import java.util.List;
+import utility.StringUtility;
 
 /**
  * リーダ：情報を記したCSVファイルを読み込んでテーブルに仕立て上げる。

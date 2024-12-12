@@ -74,7 +74,6 @@ public abstract class IO extends Object
 		table.put(">", "&gt;");
 		table.put("<", "&lt;");
 		table.put("\"", "&quot;");
-		table.put(" ", "&nbsp;");
 		table.put("\t", "");
 		table.put("\r", "");
 		table.put("\n", "<br>");
@@ -169,7 +168,7 @@ public abstract class IO extends Object
 	}
 
 	/**
-	 * 指定された行リストを、指定されたファイル名のファイルに書き出すクラスメソッド。
+	 * 指定された行リストを、指定されたファ��ル名のファイルに書き出すクラスメソッド。
 	 * @param aCollection 行リスト
 	 * @param fileString ファイル名
 	 */
