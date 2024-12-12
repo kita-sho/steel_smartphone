@@ -96,9 +96,9 @@ public class Writer extends IO {
         aWriter.write("<style>");
         aWriter.write("table { border-collapse: collapse; width: 100%; }");
         aWriter.write("th, td { border: 1px solid black; padding: 8px; text-align: left; }");
-        aWriter.write("th { background-color: #f2f2f2; }");
-        aWriter.write(".even-row { background-color: #ffffff; }");
-        aWriter.write(".odd-row { background-color: #f9f9f9; }");
+        aWriter.write("th { background-color: #ffddbb; }");
+        aWriter.write(".even-row { background-color: #ccffcc; }");
+        aWriter.write(".odd-row { background-color: #ffddbb; }");
         aWriter.write("img { display: block; margin: auto; }");
         aWriter.write("</style>");
         aWriter.write("</head>");
@@ -123,6 +123,7 @@ public class Writer extends IO {
      * @param aWriter ライタ
      */
     private void writeTuplesOn(BufferedWriter aWriter) throws IOException {
+        aWriter.write("<h1>総理大臣</h1>");
         int index = 0;
         for (Tuple aTuple : this.table().tuples()) {
             aWriter.write("<tr>");
@@ -146,7 +147,7 @@ public class Writer extends IO {
                     String imageNumber = unescapedString.replaceAll("[^0-9]", "");
                     aWriter.write("<a href=\"images/" + imageNumber + ".jpg\">");
                     aWriter.write("<img src=\"thumbnails/" + imageNumber + ".jpg\" " +
-                                "width=\"64\" height=\"64\" " +
+                                "width=\"32\" height=\"32\" " +
                                 "alt=\"Image " + imageNumber + "\">");
                     aWriter.write("</a>");
                 } else {
