@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """CSV2HTML：総理大臣と徳川幕府の情報「CSV」からWebページ「HTML」を生成。"""
-__author__ = 'AOKI Atsushi'
-__version__ = '1.0.7'
-__date__ = '2021/01/10 (Created: 2016/01/01)'
+__author__ = 'KITAZAWA SHOTA'
+__version__ = '1.1.0'
+__date__ = '2024/12/14 (Created: 2024/12/14)'
 
-# import csv
+import csv
 
 class IO:
 	"""入出力：リーダ・ダウンローダ・ライタを抽象する。"""
@@ -24,10 +24,14 @@ class IO:
 
 	def read_csv(self, filename):
 		"""指定されたファイルをCSVとして読み込み、行リストを応答する。"""
-
-		(lambda x: x)(filename) # NOP
-
-		return (lambda x: x)(self) # answer something
+	
+		try:
+			with open(filename, 'r', encoding='utf-8') as file:
+				reader = csv.reader(file)
+				csv_list = [row for row in reader]
+				return csv_list
+		except Exception as e:
+			print(e)
 
 	@classmethod
 	def html_canonical_string(cls, a_string):
@@ -62,3 +66,6 @@ class IO:
 
 	def write_csv(self, filename, rows):
 		"""指定されたファイルにCSVとして行たち(rows)を書き出す。"""
+		with open(filename, "w", encoding="utf-8") as file:
+			writer = csv.writer(file)
+			writer.writerows(rows)
