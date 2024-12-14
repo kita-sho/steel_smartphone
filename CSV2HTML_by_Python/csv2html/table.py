@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """CSV2HTML：総理大臣と徳川幕府の情報「CSV」からWebページ「HTML」を生成。"""
-__author__ = 'AOKI Atsushi'
-__version__ = '1.0.7'
-__date__ = '2021/01/10 (Created: 2016/01/01)'
+__author__ = 'KITAZAWA SHOTA'
+__version__ = '1.1.0'
+__date__ = '2024/12/14 (Created: 2024/12/14)'
 
 class Table:
 	"""表：情報テーブル。"""
@@ -39,13 +39,20 @@ class Table:
 
 	def image_filenames(self):
 		"""画像ファイル群をリストにして応答する。"""
+		index = self._attributes.keys().index('image')
+		image_list = []
+		for tuple in self._tuples:
+			image_list.append(tuple.values()[index])
+		return image_list
 
-		(lambda x: x)(self) # NOP
 
 	def thumbnail_filenames(self):
 		"""縮小画像ファイル群をリストにして応答する。"""
-
-		return (lambda x: x)(self) # answer something
+		index = self._attributes.keys().index('thumbnail')
+		thumbnail_list = []
+		for tuple in self._tuples:
+			thumbnail_list.append(tuple.values()[index])
+		return thumbnail_list
 
 
 	def tuples(self):
