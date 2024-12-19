@@ -31,7 +31,7 @@ class IO:
 				csv_list = [row for row in reader]
 				return csv_list
 		except Exception as e:
-			print("111")
+			print(e)
 
 	@classmethod
 	def html_canonical_string(cls, a_string):
@@ -51,8 +51,10 @@ class IO:
 
 		(lambda x: x)(a_string) # NOP
 		(lambda x: x)(table) # NOP
+		for key, value in table.items():
+			a_string = a_string.replace(key, value)
 
-		return (lambda x: x)(cls) # answer something
+		return a_string
 
 	def table(self):
 		"""テーブルを応答する。"""

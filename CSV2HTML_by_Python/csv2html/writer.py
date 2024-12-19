@@ -38,153 +38,92 @@ class Writer(IO):
 
 	def write_body(self, file):
 		"""ボディを書き出す。つまり、属性リストを書き出し、タプル群を書き出す。"""
-		body = [
-			'<body>',
-			'<div class="belt">',
-			f'<h2>{self.attributes().caption_string()}</h2>'
-			'</div>',
-			'<table class="belt" summary="table">',
-			'    <tbody>',
-			'        <tr>',
-			'            <td>',
-			'                <table class="content" summary="table">',
-			'                    <tbody>',
-			'						<tr>',
-		]
 
-		for header in super().attributes().names():
-			body.append(f'							<td class="center-pink"><strong>{header}</strong></td>')
-		body.append('						</tr>')
+		file.write("<tr>")
+		file.write("\n")
+	
+		for attribute in self.table().attributes().names():
+			print(attribute)
+			file.write("<td class=\"center-pink\"><strong>" + attribute + "</strong></td>")
+			file.write("\n")
+        
+		file.write("<tr>")
+		file.write("\n")
 
-		center_color = ["center-blue", "center-yellow"]
-		for index, a_tuple in enumerate(super().tuples()):
-			body.append('						<tr>')
-			for a_item in a_tuple.values():
-				body.append(f'							<td class="{center_color[index%2]}">{a_item}</td>')
-			body.append('						</tr>')
+		file.write("<h1>総理大臣</h1>")
+		file.write("\n")
 
-		body.append('''
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</tbody>
-</table>
-		''')
-		file.write(
-			os.linesep.join(body) + os.linesep
-		)
+		index = 0
+		for a_tuple in self.table().tuples():	
+			file.write("<tr>")
+			file.write("\n")
 
+			row_class = "even-row" if index % 2 == 0 else "odd-row"	
+				
+			for value in a_tuple.values():
+				file.write(f"<td class=\"{row_class}\">")
+				file.write(str(value))
+				print(str(value))	
+				# エスケープされたHTMLタグを元に戻して処理
+				"""unescaped_string = (
+					value.replace("&lt;", "<")
+					.replace("&gt;", ">")
+					.replace("&quot;", "\"")
+					.replace("&amp;", "&")
+				)
+
+				if unescaped_string.startswith("<a href='images/") and unescaped_string.endswith("</a>"):
+					# 画像タグをそのまま出力
+					file.write(unescaped_string)
+				elif unescaped_string.endswith(".jpg") and unescaped_string.isdigit():
+					image_number = ''.join(filter(str.isdigit, unescaped_string))
+					file.write(f"<a href=\"images/{image_number}.jpg\">")
+					file.write(f"<img src=\"thumbnails/{image_number}.jpg\" " +
+									f"width=\"32\" height=\"32\" " +
+									f"alt=\"Image {image_number}\">")
+					file.write("</a>")
+				else:
+					file.write(self.html_canonical_string(unescaped_string))"""		
+				file.write("</td>")
+				file.write("\n")	
+			file.write("</tr>")
+			file.write("\n")
+			index += 1
 		(lambda x: x)(file) # NOP
 
 	def write_footer(self, file):
 		"""フッタを書き出す。"""
 
-		today = datetime.datetime.now()
-		date = today.date()
-		time = today.time()
-
-		footer = [
-			'<hr>',
-			f'<div class="right-small">Created by csv2html.Translator on {date.strftime("%Y/%m/%d")}\
- at {time.isoformat(timespec="seconds")}</div>',
-			'</body>',
-			'</html>',
-		]
-		file.write(
-			os.linesep.join(footer) + os.linesep
-		)
-
+		file.write("</table>")
+		file.write("\n")
+		file.write("</body>")
+		file.write("\n")
+		file.write("</html>")
+		file.write("\n")
 		(lambda x: x)(file) # NOP
 
 	def write_header(self, file):
 		"""ヘッダを書き出す。"""
 
-		header = [
-			"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">",
-			"<html lang=\"ja\">",
-			"<head>",
-			"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">",
-			"<meta http-equiv=\"Content-Style-Type\" content=\"text/css\">",
-			"<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\">",
-			"<meta name=\"keywords\" content=\"Smalltalk,Oriented,Programming\">",
-			f"<meta name=\"descriptio\" content=\"{self.attributes().title_string()}\">",
-			'<meta name="author" content="Konchan">',
-			'''
-<style type="text/css">
-<!--
-body {
-	background-color : #ffffff;
-	margin : 20px;
-	padding : 10px;
-	font-family : serif;
-	font-size : 10pt;
-}
-a {
-	text-decoration : underline;
-	color : #000000;
-}
-a:link {
-	background-color : #ffddbb;
-}
-a:visited {
-	background-color : #ccffcc;
-}
-a:hover {
-	background-color : #dddddd;
-}
-a:active {
-	background-color : #dddddd;
-}
-div.belt {
-	background-color : #eeeeee;
-	padding : 0px 4px;
-}
-div.right-small {
-	text-align : right;
-	font-size : 8pt;
-}
-img.borderless {
-	border-width : 0px;
-	vertical-align : middle;
-}
-table.belt {
-	border-style : solid;
-	border-width : 0px;
-	border-color : #000000;
-	background-color : #ffffff;
-	padding : 0px 0px;
-	width : 100%;
-}
-table.content {
-	border-style : solid;
-	border-width : 0px;
-	border-color : #000000;
-	padding : 2px 2px;
-}
-td.center-blue {
-	padding : 2px 2px;
-	text-align : center;
-	background-color : #ddeeff;
-}
-td.center-pink {
-	padding : 2px 2px;
-	text-align : center;
-	background-color : #ffddee;
-}
-td.center-yellow {
-		padding : 2px 2px;
-	text-align : center;
-	background-color : #ffffcc;
-}
--->
-</style>
-			''',
-			f'<title>{self.attributes().title_string()}</title>',
-			'</head>',
-		]
-		file.write(
-			os.linesep.join(header) + os.linesep
-		)
+		file.write("<!DOCTYPE html>")
+		file.write("\n")
+		file.write("<html>")
+		file.write("\n")
+		file.write("<head>")
+		file.write("<meta charset=\"UTF-8\">")
+		file.write("<style>")
+		file.write("table { border-collapse: collapse width: 100% }")
+		file.write("th, td { border: 1px solid black; padding: 8px; text-align: left; }")
+		file.write("th { background-color: #ffddbb; }")
+		file.write(".even-row { background-color: #ccffcc; }")
+		file.write(".odd-row { background-color: #ffddbb; }")
+		file.write("img { display: block; margin: auto; }")
+		file.write("</style>")
+		file.write("</head>")
+		file.write("\n")
+		file.write("<body>")
+		file.write("\n")
+		file.write("<table>")
+		file.write("\n")
 
 		(lambda x: x)(file) # NOP
