@@ -64,26 +64,7 @@ class Writer(IO):
 				file.write(f"<td class=\"{row_class}\">")
 				file.write(str(value))
 				print(str(value))	
-				# エスケープされたHTMLタグを元に戻して処理
-				"""unescaped_string = (
-					value.replace("&lt;", "<")
-					.replace("&gt;", ">")
-					.replace("&quot;", "\"")
-					.replace("&amp;", "&")
-				)
-
-				if unescaped_string.startswith("<a href='images/") and unescaped_string.endswith("</a>"):
-					# 画像タグをそのまま出力
-					file.write(unescaped_string)
-				elif unescaped_string.endswith(".jpg") and unescaped_string.isdigit():
-					image_number = ''.join(filter(str.isdigit, unescaped_string))
-					file.write(f"<a href=\"images/{image_number}.jpg\">")
-					file.write(f"<img src=\"thumbnails/{image_number}.jpg\" " +
-									f"width=\"32\" height=\"32\" " +
-									f"alt=\"Image {image_number}\">")
-					file.write("</a>")
-				else:
-					file.write(self.html_canonical_string(unescaped_string))"""		
+					
 				file.write("</td>")
 				file.write("\n")	
 			file.write("</tr>")

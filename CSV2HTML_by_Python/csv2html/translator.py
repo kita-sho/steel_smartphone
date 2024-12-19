@@ -123,6 +123,8 @@ class Translator:
 					values.append(self.compute_string_of_image(a_tuple))
 				elif key in input_key:
 					values.append(IO.html_canonical_string(a_tuple.values()[input_key.index(key)]))
+
+				
 				
 			self._output_table.add(Tuple(self._output_table.attributes(), values))
 
