@@ -31,7 +31,7 @@ class IO:
 				csv_list = [row for row in reader]
 				return csv_list
 		except Exception as e:
-			print(e)
+			print("111")
 
 	@classmethod
 	def html_canonical_string(cls, a_string):
