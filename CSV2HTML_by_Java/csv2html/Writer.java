@@ -99,7 +99,7 @@ public class Writer extends IO {
         aWriter.write("th { background-color: #ffddbb; }");
         aWriter.write(".even-row { background-color: #ccffcc; }");
         aWriter.write(".odd-row { background-color: #ffddbb; }");
-        aWriter.write("img { display: block; margin: auto; }");
+        aWriter.write("img { display: block; margin: auto; height: 32px, width: 32px }");
         aWriter.write("</style>");
         aWriter.write("</head>");
         aWriter.newLine();
@@ -123,7 +123,7 @@ public class Writer extends IO {
      * @param aWriter ライタ
      */
     private void writeTuplesOn(BufferedWriter aWriter) throws IOException {
-        aWriter.write("<h1>総理大臣</h1>");
+        aWriter.write("<h1>" + this.table().attributes().captionString() + "</h1>");
         int index = 0;
         for (Tuple aTuple : this.table().tuples()) {
             System.out.println("aTuple: " + aTuple);
@@ -148,9 +148,7 @@ public class Writer extends IO {
                 } else if (unescapedString.matches(".*\\d+\\.jpg$")) {
                     String imageNumber = unescapedString.replaceAll("[^0-9]", "");
                     aWriter.write("<a href=\"images/" + imageNumber + ".jpg\">");
-                    aWriter.write("<img src=\"thumbnails/" + imageNumber + ".jpg\" " +
-                                "width=\"32\" height=\"32\" " +
-                                "alt=\"Image " + imageNumber + "\">");
+                    aWriter.write("<img src=\"thumbnails/" + imageNumber + ".jpg\">");
                     aWriter.write("</a>");
                 } else {
                     aWriter.write(IO.htmlCanonicalString(unescapedString));

@@ -98,15 +98,22 @@ public class Translator extends Object {
 
 
     /**
-     * サムネイル画像から画像へ飛ぶためのHTML文字列を作成して、それを応答する。
-     *
-     * @param aString 画像の文字列
-     * @param aTuple タプル
-     * @param no 番号
-     * @return サムネイル画像から画像へ飛ぶためのHTML文字列
+     * 画像のHTML文字列を計算して返す。
      */
-    public String computeStringOfImage(String aString, Tuple aTuple, int no) {
-        return String.format("<a href='%s'><img src='%s' alt='Image %d' /></a>", aString, aString, no);
+    private String computeStringOfImage(String aString, Tuple aTuple, Integer no) {
+        if (aString.isEmpty()) {
+            return "";
+        }
+
+        // 画像サイズの設定
+        int width = 25;   // デフォルトの幅
+        int height = 33;  // デフォルトの高さ
+
+        // HTML形式の画像タグを生成
+        return String.format(
+            "<a href='%s'><img src='%s' width='%d' height='%d' alt='Image %d' /></a>",
+            aString, aString, width, height, no
+        );
     }
     
 
@@ -144,7 +151,7 @@ public class Translator extends Object {
      * @param classOfAttributes 属性リストのクラス
      */
     public static void perform(Class<? extends Attributes> classOfAttributes) {
-        // トランスレータのインスタンスを生成する。
+        // トランスレータのインス���ンスを生成する。
         Translator aTranslator = new Translator(classOfAttributes);
         // トランスレータにCSVファイルをHTMLページへ変換するように依頼する。
         aTranslator.execute();
