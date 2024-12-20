@@ -117,7 +117,7 @@ class Translator:
 			values = []
 			for key in self._output_table.attributes().keys():
 				if key == "days":
-					print(a_tuple.values()[input_key.index("period")])
+					#print(a_tuple.values()[input_key.index("period")])
 					values.append(self.compute_string_of_days(a_tuple.values()[input_key.index("period")]))
 				elif key == "image":
 					values.append(self.compute_string_of_image(a_tuple))

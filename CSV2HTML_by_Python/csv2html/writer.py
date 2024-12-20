@@ -43,14 +43,14 @@ class Writer(IO):
 		file.write("\n")
 	
 		for attribute in self.table().attributes().names():
-			print(attribute)
+			#print(attribute)
 			file.write("<td class=\"center-pink\"><strong>" + attribute + "</strong></td>")
 			file.write("\n")
         
 		file.write("<tr>")
 		file.write("\n")
 
-		file.write("<h1>総理大臣</h1>")
+		file.write("<h1>"+self.attributes().caption_string()+"</h1>")
 		file.write("\n")
 
 		index = 0
@@ -63,7 +63,7 @@ class Writer(IO):
 			for value in a_tuple.values():
 				file.write(f"<td class=\"{row_class}\">")
 				file.write(str(value))
-				print(str(value))	
+				#print(str(value))
 					
 				file.write("</td>")
 				file.write("\n")	
@@ -96,8 +96,8 @@ class Writer(IO):
 		file.write("table { border-collapse: collapse width: 100% }")
 		file.write("th, td { border: 1px solid black; padding: 8px; text-align: left; }")
 		file.write("th { background-color: #ffddbb; }")
-		file.write(".even-row { background-color: #ccffcc; }")
-		file.write(".odd-row { background-color: #ffddbb; }")
+		file.write(".even-row { background-color: #ddeeff; }")
+		file.write(".odd-row { background-color: #ffffcc; }")
 		file.write("img { display: block; margin: auto; }")
 		file.write("</style>")
 		file.write("</head>")
