@@ -117,11 +117,8 @@ public class Translator extends Object {
         // 必要な情報をダウンロードする。
         Downloader aDownloader = new Downloader(this.inputTable);
         aDownloader.perform();
-
-        // CSVに由来するテーブルをHTMLに由来するテーブルへと変換する。
-        System.out.println(this.inputTable);
+        //CSV変換
         this.translate();
-        System.out.println(this.outputTable);
 
         // HTMLに由来するテーブルから書き出す。
         Writer aWriter = new Writer(this.outputTable);
@@ -159,14 +156,7 @@ public class Translator extends Object {
      * CSVファイルを基にしたテーブルから、HTMLページを基にするテーブルに変換する。
      */
     public void translate() {
-        // デバッグ出力を追加
-        System.out.println("\n=== Before Translation ===");
-        System.out.println("Input Table Tuples Size: " + this.inputTable.tuples().size());
-        if (!this.inputTable.tuples().isEmpty()) {
-            System.out.println("First Input Tuple: " + this.inputTable.tuples().get(0).values());
-        }
-
-        // 新たに設定する属性リストの�ーと名前（CSVに存在しない特殊カラムのみ定義）
+        // 新たに設定する属性リストと名前（CSVに存在しない特殊カラムのみ定義）
         Map<String, String> specialColumnNames = new HashMap<>();
         specialColumnNames.put("days", "在位日数");
 
@@ -179,21 +169,20 @@ public class Translator extends Object {
 
             String columnName;
             if (specialColumnNames.containsKey(key)) {
-                // 特殊カラム（な�）の場合は定義済みの名前を使用
+                // 特殊カラムの場合は定義済みの名前を使用
                 columnName = specialColumnNames.get(key);
             } else if (indexOfInputKey != -1) {
-                // 入力CSVに存在するカラムの�合はCSVの属性名を使用
+                // 入力CSVに存在するカラムの場合はCSVの属性名を使用
                 columnName = inputAttributes.nameAt(indexOfInputKey);
                 if (columnName == null || columnName.isEmpty()) {
                     // 属性名が空の場合はキーを使用
                     columnName = key;
                 }
             } else {
-                // どちらにも該当�い場合は未定義とする
+                // どちらにも該当い場合は未定義とする
                 columnName = "未定義";
             }
             
-            System.out.println("Setting column name for " + key + ": " + columnName);
             outputAttributes.names().set(indexOfOutputKey, IO.htmlCanonicalString(columnName));
         });
 
@@ -210,17 +199,16 @@ public class Translator extends Object {
                     // 在位日数を入れる
                     String periodValue = aTuple.values().get(inputAttributes.indexOf("period"));
                     aValue = this.computeNumberOfDays(periodValue);
-                    System.out.println("Computing days for period: " + periodValue + " -> " + aValue);
                 } else if ("image".equals(key)) {
                     // 画像のHTML文を入れる
-                    String imagePath = aTuple.values().get(inputAttributes.indexOfImage());
-                    String no = aTuple.values().get(inputAttributes.indexOfNo());
-                    aValue = this.computeStringOfImage(imagePath, aTuple, Integer.valueOf(no));
-                    System.out.println("Computing image HTML for: " + imagePath);
-                } else if (inputIndex != -1) {
+                    if (inputAttributes.indexOfImage() < aTuple.values().size()) {
+                        String imagePath = aTuple.values().get(inputAttributes.indexOfImage());
+                        String no = aTuple.values().get(inputAttributes.indexOfNo());
+                        aValue = this.computeStringOfImage(imagePath, aTuple, Integer.valueOf(no));
+                    }
+                } else if (inputIndex != -1 && inputIndex < aTuple.values().size()) {
                     // 通常のカラムの値を取得
                     aValue = aTuple.values().get(inputIndex);
-                    System.out.println("Copying value for " + key + ": " + aValue);
                 }
                 
                 tupleValues.add(IO.htmlCanonicalString(aValue));
@@ -228,13 +216,6 @@ public class Translator extends Object {
 
             this.outputTable.add(new Tuple(this.outputTable.attributes(), tupleValues));
         });
-
-        // 変換後の状態を確認
-        System.out.println("\n=== After Translation ===");
-        System.out.println("Output Table Tuples Size: " + this.outputTable.tuples().size());
-        if (!this.outputTable.tuples().isEmpty()) {
-            System.out.println("First Output Tuple: " + this.outputTable.tuples().get(0).values());
-        }
 
         return;
     }

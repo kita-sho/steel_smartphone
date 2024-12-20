@@ -126,6 +126,8 @@ public class Writer extends IO {
         aWriter.write("<h1>総理大臣</h1>");
         int index = 0;
         for (Tuple aTuple : this.table().tuples()) {
+            System.out.println("aTuple: " + aTuple);
+            System.out.println("");
             aWriter.write("<tr>");
             aWriter.newLine();
             
