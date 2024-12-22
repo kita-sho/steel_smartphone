@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 属性リスト：情報テーブルを入出力する際の属性情報を記憶。
+ * @version 1.0
  */
 abstract class Attributes extends Object
 {

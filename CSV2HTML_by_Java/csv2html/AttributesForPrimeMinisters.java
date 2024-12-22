@@ -4,6 +4,7 @@ import java.io.File;
 
 /**
  * 属性リスト：総理大臣の情報テーブルを入出力する際の属性情報を記憶。
+ * @version 1.0
  */
 public class AttributesForPrimeMinisters extends Attributes
 {

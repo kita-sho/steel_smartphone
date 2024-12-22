@@ -11,7 +11,6 @@ import utility.StringUtility;
 /**
  * 入出力：リーダ・ダウンローダ・ライタを抽象する。
  * @author 北澤昇大
- * @author 小川結人
  * @since 2024/12/01
  * @version 1.0
  */

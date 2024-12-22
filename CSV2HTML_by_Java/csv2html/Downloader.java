@@ -10,7 +10,7 @@ import utility.StringUtility;
  * ダウンローダ：CSVファイル・画像ファイル・サムネイル画像ファイルをダウンロードする。
  * @author 北澤昇大
  * @since 2024/12/9
- * @version 2.0
+ * @version 1.0.1 Threadを用いたダウンロードに変更
  */
 public class Downloader extends IO
 {
@@ -88,11 +88,34 @@ public class Downloader extends IO
 		this.downloadCSV();
 		Reader reader = new Reader(super.table());
 		reader.perform();
-		/*
-		 * この二つはThradを使って同時にできるかも by北澤 12月9日
-		 */
-		this.downloadThumbnails();
-		this.downloadImages();
+		
+		// downloadImages();
+		// downloadThumbnails();
+
+		Thread downloadImageThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				downloadImages();
+			}
+		});
+		
+		Thread downloadThumbnailsThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				downloadThumbnails();
+			}
+		});
+		
+		downloadImageThread.start();
+		downloadThumbnailsThread.start();
+		
+		try {
+			downloadImageThread.join();
+			downloadThumbnailsThread.join();
+		} catch (InterruptedException exception) {
+			System.out.println(exception);
+		}
+		
 		return;
 	}
 }

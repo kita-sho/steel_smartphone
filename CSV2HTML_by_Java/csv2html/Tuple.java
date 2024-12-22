@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * タプル：情報テーブルの中の各々のレコード。
+ *@version 1.0
  */
 public class Tuple extends Object
 {

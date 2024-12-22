@@ -6,15 +6,15 @@ import utility.StringUtility;
 
 /**
  * リーダ：情報を記したCSVファイルを読み込んでテーブルに仕立て上げる。
+ * @author 北澤昇大
+ * @since 2024/12/9
+ * @version 1.0
  */
 public class Reader extends IO
 {
 	/**
 	 * リーダのコンストラクタ。
 	 * @param aTable テーブル
-	 * @author 北澤昇大
-	 * @since 2024/12/9
-	 * @version 1.0
 	 */
 	public Reader(Table aTable)
 	{

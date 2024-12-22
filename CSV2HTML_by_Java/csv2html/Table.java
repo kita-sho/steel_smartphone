@@ -9,7 +9,6 @@ import utility.ImageUtility;
 /**
  * 表：情報テーブル。
  * @author 北澤昇大
- * @author 小川結人
  * @since 2024/12/9
  * @version 1.0
  */
