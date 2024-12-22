@@ -3,12 +3,13 @@
 
 """CSV2HTML：総理大臣と徳川幕府の情報「CSV」からWebページ「HTML」を生成。"""
 __author__ = 'KITAZAWA SHOTA'
-__version__ = '1.1.0'
+__version__ = '1.0.8' 
 __date__ = '2024/12/14 (Created: 2024/12/14)'
 
 import os
 import shutil
 import urllib.request
+import threading
 
 from csv2html.io import IO
 from csv2html.reader import Reader
@@ -55,7 +56,17 @@ class Downloader(IO):
 		self.download_csv()
 		reader = Reader(super().table())
 		reader.perform()
-		self.download_images(super().table().image_filenames())
-		self.download_images(super().table().thumbnail_filenames())
+
+		# self.download_images(super().table().image_filenames())
+		# self.download_images(super().table().thumbnail_filenames())
+
+		thread1 = threading.Thread(target=self.download_images, args=(super().table().image_filenames(),))
+		thread2 = threading.Thread(target=self.download_images, args=(super().table().thumbnail_filenames(),))
+		
+		thread1.start()
+		thread2.start()
+  
+		thread1.join()
+		thread2.join()
   
 		(lambda x: x)(self) # NOP

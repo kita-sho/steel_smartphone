@@ -3,7 +3,7 @@
 
 """CSV2HTML：総理大臣と徳川幕府の情報「CSV」からWebページ「HTML」を生成。"""
 __author__ = 'KiTAZAWA SHOTA'
-__version__ = '1.1.0'
+__version__ = '1.0.7'
 __date__ = '2024/12/14 (Created: 2024/12/14)'
 
 import os
